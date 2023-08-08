@@ -3,3 +3,6 @@
 **/.idea
 **/.gradle
 **/build
+
+.DS_Store
+bats-extra.bash
