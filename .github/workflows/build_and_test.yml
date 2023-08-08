@@ -23,8 +23,6 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      # Execute Gradle build for all subfolders
       - name: Gradle Build
         run: |
-          find . -type f -name 'build.gradle.kts' -execdir chmod +x gradlew \;
-          find . -type f -name 'build.gradle.kts' -execdir ./gradlew clean build \;
+          find . -type f -name 'build.gradle.kts' -execdir chmod +x gradlew && ./gradlew clean build\;
