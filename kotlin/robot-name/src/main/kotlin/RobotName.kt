@@ -1,11 +1,8 @@
-import kotlin.random.Random
-
-class Robot {
-
-  var name: String = UniqueRobotNameGenerator.generateUniqueRobotName()
+class Robot(private val nameGenerator: UniqueRobotNameGenerator = UniqueRobotNameGenerator) {
+  var name: String = nameGenerator.generateUniqueRobotName()
 
   fun reset() {
-    name = UniqueRobotNameGenerator.generateUniqueRobotName()
+    name = nameGenerator.generateUniqueRobotName()
   }
 }
 
@@ -13,13 +10,17 @@ object UniqueRobotNameGenerator {
 
   private val generatedRobotNames = mutableSetOf<String>()
 
+  private fun generateRandomRobotName() = buildString {
+    repeat(2) { append(('A'..'Z').random()) }
+    append((100..999).random())
+  }
+
   fun generateUniqueRobotName(): String {
     var newRobotName: String
     do {
-      val letterPart = ('A'..'Z').random().toString() + ('A'..'Z').random().toString()
-      val digitPart = Random.nextInt(100, 999).toString()
-      newRobotName = "$letterPart$digitPart"
+      newRobotName = generateRandomRobotName()
     } while (newRobotName in generatedRobotNames)
+
     generatedRobotNames.add(newRobotName)
     return newRobotName
   }
