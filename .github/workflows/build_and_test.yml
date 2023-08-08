@@ -25,4 +25,4 @@ jobs:
 
       - name: Gradle Build
         run: |
-          find . -type f -name 'build.gradle.kts' -execdir chmod +x gradlew \; -execdir ./gradlew clean build\;
+          find . -type f -name 'build.gradle.kts' \( -execdir chmod +x gradlew \; -execdir ./gradlew clean build\);
