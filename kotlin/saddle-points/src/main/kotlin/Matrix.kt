@@ -2,8 +2,10 @@ data class MatrixCoordinate(val rowIndex: Int, val columnIndex: Int)
 
 class Matrix(private val grid: List<List<Int>>) {
 
-	val saddlePoints: Set<MatrixCoordinate> by lazy {
-		grid.mapIndexed { rowIndex, row ->
+	val saddlePoints: Set<MatrixCoordinate> get() = calculateSaddlePoints()
+
+	private fun calculateSaddlePoints(): Set<MatrixCoordinate> {
+		return grid.mapIndexed { rowIndex, row ->
 			row.mapIndexedNotNull { columnIndex, _ ->
 				val maxInRow = row.maxOrNull()
 				val minInColumn = grid.minOfOrNull { it[columnIndex] }
