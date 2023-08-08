@@ -26,12 +26,7 @@ jobs:
       # Execute Gradle build for all subfolders
       - name: Gradle Build
         run: |
-          for dir in */ ; do
-            if [[ -f "$dir/build.gradle.kts" || -f "$dir/build.gradle" ]]; then
-              echo "Building $dir"
-              (cd $dir ; ./gradlew clean build)
-            fi
-          done
+          find . -type f -name 'build.gradle.kts' -execdir ./gradlew clean build \;
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
