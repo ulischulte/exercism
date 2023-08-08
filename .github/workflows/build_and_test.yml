@@ -23,11 +23,10 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Grant execute permissions to Gradle wrapper
-        run: chmod +x gradlew
       # Execute Gradle build for all subfolders
       - name: Gradle Build
         run: |
+          find . -type f -name 'build.gradle.kts' -execdir chmod +x gradlew \;
           find . -type f -name 'build.gradle.kts' -execdir ./gradlew clean build \;
       - uses: codecov/codecov-action@v3
         with:
