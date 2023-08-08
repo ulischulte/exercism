@@ -30,7 +30,12 @@ jobs:
           java-version: '17'
       - name: Run build
         run: |
-          ./gradlew clean build
+          for dir in */ ; do
+            if [[ -f "$dir/build.gradle.kts" || -f "$dir/build.gradle" ]]; then
+              echo "Building $dir"
+              (cd $dir ; ./gradlew clean build)
+            fi
+          done
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
