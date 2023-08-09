@@ -10,11 +10,6 @@ object UniqueRobotNameGenerator {
 
   private val generatedRobotNames = mutableSetOf<String>()
 
-  private fun generateRandomRobotName() = buildString {
-    repeat(2) { append(('A'..'Z').random()) }
-    append((100..999).random())
-  }
-
   fun generateUniqueRobotName(): String {
     var newRobotName: String
     do {
@@ -23,5 +18,10 @@ object UniqueRobotNameGenerator {
 
     generatedRobotNames.add(newRobotName)
     return newRobotName
+  }
+
+  private fun generateRandomRobotName() = buildString {
+    repeat(2) { append(('A'..'Z').random()) }
+    append((100..999).random())
   }
 }
