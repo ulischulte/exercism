@@ -1,21 +1,20 @@
-import java.util.concurrent.atomic.AtomicInteger
-
 class BankAccount {
-  private val internalBalance = AtomicInteger(0)
-  private var open: Boolean = true
+  private var isOpen = true
 
-  val balance : Int
+  var balance: Int = 0
+    private set
     get() {
-      check(open)
-      return internalBalance.get()
+      check(this.isOpen)
+      return field
     }
 
+  @Synchronized
   fun adjustBalance(amount: Int) {
-    check(open)
-    internalBalance.addAndGet(amount)
+    check(this.isOpen)
+    balance += amount
   }
 
-  fun close(){
-    open = false
+  fun close() {
+    isOpen = false
   }
 }
