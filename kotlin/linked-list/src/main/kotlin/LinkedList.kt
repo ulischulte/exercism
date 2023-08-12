@@ -1,4 +1,4 @@
-data class Node<T>(val value: T, var previous: Node<T>?, var next: Node<T>?)
+data class Node<T>(val value: T, var previous: Node<T>? = null, var next: Node<T>? = null)
 
 class Deque<T> {
 
@@ -6,37 +6,33 @@ class Deque<T> {
   private var tail: Node<T>? = null
 
   fun push(value: T) {
-    val newNode = Node(value, previous = null, next = head)
-    if (head != null) {
-      head?.previous = newNode
-    } else {
-      tail = newNode
+    Node(value, next = this.head).apply {
+      if (head == null) {
+        tail = this
+      } else {
+        head?.previous = this
+      }
+      head = this
     }
-    head = newNode
   }
 
-  fun pop(): T? {
-    val oldHead = head
+  fun pop(): T? = head?.value.apply {
     head = head?.next
-    return oldHead?.value
   }
 
-  fun shift(): T? {
-    val oldTail = tail
+  fun shift(): T? = tail?.value.apply {
     tail = tail?.previous
-    return oldTail?.value
   }
 
   fun unshift(value: T) {
-    val newNode = Node(value, previous = tail, next = null)
-    if (tail != null) {
-      tail?.next = newNode
-    } else {
-      head = newNode
+    Node(value, previous = tail).apply {
+      if (tail == null) {
+        head = this
+      } else {
+        tail?.next = this
+      }
+      tail = this
     }
-    tail = newNode
   }
-
-  fun isEmpty() = head == null
 
 }
