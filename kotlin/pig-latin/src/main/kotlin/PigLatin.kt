@@ -1,5 +1,5 @@
 object PigLatin {
-  private val startingConsonantsPattern = Regex("^([bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{1,3}.*)")
+
   private val twoLetterClusters = setOf(
     "bl", "br", "ch", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr",
     "qu", "rh", "sc", "sh", "sk", "sl", "sm", "sn", "sp", "st", "sw", "th",
@@ -7,25 +7,16 @@ object PigLatin {
   )
   private val threeLetterClusters = setOf("spl", "spr", "str", "scr", "shr", "squ", "thr", "sch")
 
-  fun translate(phrase: String): String = phrase.split(" ").joinToString(" ") { word ->
-    when {
-      word.matches(Regex("^([aeiou]|xr|yt).*")) -> "${word}ay"
-      word.matches(Regex("^[aeiouAEIOU](qu).*")) -> applyPigLatin(word, word.indexOf("qu") + 4)
-      word.startsWithConsecutiveConsonants() -> when {
-        threeLetterClusters.contains(word.take(3)) -> applyPigLatin(word, 3)
-        twoLetterClusters.contains(word.take(2)) -> applyPigLatin(word, 2)
-        else -> applyPigLatin(word, 1)
-      }
+  fun translate(phrase: String) =
+    phrase.split(" ").joinToString(" ") { applyPigLatin(it) }
 
-      word.matches(Regex("^.*?[aeiou].*")) -> applyPigLatin(word, word.indexOfFirst { it.isVowel() })
-      else -> applyPigLatin(word, word.indexOfFirst { it == 'y' }.let { if (it == 0) 1 else it })
+  private fun applyPigLatin(word: String): String {
+    val start = when {
+      word.matches(Regex("^([aeiou]|xr|yt).*")) -> 0
+      word.take(3) in threeLetterClusters -> 3
+      word.take(2) in twoLetterClusters -> 2
+      else -> 1
     }
+    return "${word.drop(start)}${word.take(start)}ay"
   }
-
-  private fun applyPigLatin(word: String, splitIndex: Int): String =
-    "${word.substring(splitIndex)}${word.substring(0, splitIndex)}ay"
-
-  private fun Char.isVowel(): Boolean = this in "aeiou"
-
-  private fun String.startsWithConsecutiveConsonants(): Boolean = this.matches(startingConsonantsPattern)
 }
