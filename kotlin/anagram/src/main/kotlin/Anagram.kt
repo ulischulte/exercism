@@ -1,19 +1,18 @@
-class Anagram(private val anagram: String) {
-  private val charCounts = anagram.lowercase().charsCount()
+class Anagram(private val word: String) {
 
-  fun match(anagrams: Collection<String>): Set<String> {
-    return anagrams.filter {
-      it.isAnagram(this.anagram.lowercase())
-    }.toSet()
-  }
+  private val normalizedWord = word.lowercase()
+  private val wordCharCounts = normalizedWord.charsCount()
 
-  private fun String.isAnagram(anagram: String): Boolean {
-    return this.length == anagram.length &&
-        this.lowercase() != anagram &&
-        this.lowercase().charsCount() == charCounts
-  }
-
-  private fun String.charsCount() : Map<Char, Int>{
-    return this.groupingBy { it }.eachCount()
-  }
+  fun match(anagrams: Collection<String>): Set<String> =
+    anagrams.filter { it.isAnagram(normalizedWord, wordCharCounts) }.toSet()
 }
+
+fun String.isAnagram(word: String, wordCharCounts: Map<Char, Int>): Boolean {
+  val lowerCased = this.lowercase()
+  return length == word.length &&
+      lowerCased != word &&
+      lowerCased.charsCount() == wordCharCounts
+}
+
+fun String.charsCount(): Map<Char, Int> =
+  this.groupingBy { it }.eachCount()
