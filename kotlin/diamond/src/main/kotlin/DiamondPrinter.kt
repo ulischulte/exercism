@@ -2,6 +2,7 @@ class DiamondPrinter {
   private val alphabet = 'A'..'Z'
 
   fun printToList(input: Char): List<String> {
+    require(input in 'A'..'Z')
     val size = alphabet.indexOf(input) + 1
     val upHalf = (0 until size).map { createDiamondLine(it, size) }
     val downHalf = upHalf.dropLast(1).reversed()
