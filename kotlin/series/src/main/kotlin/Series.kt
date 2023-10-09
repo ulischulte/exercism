@@ -12,5 +12,4 @@ object Series {
           lengthOfSlices <= digitsString.length
     )
   }
-
 }
