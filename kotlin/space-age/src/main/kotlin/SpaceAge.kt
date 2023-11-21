@@ -1,28 +1,26 @@
-import java.math.BigDecimal
-import java.math.RoundingMode
-
 class SpaceAge(private val seconds: Long) {
 
-  private val earthYears = this.seconds / 31557600.0
+  fun onEarth() = getAgeOnPlanet(Planet.EARTH)
+  fun onMercury() = getAgeOnPlanet(Planet.MERCURY)
+  fun onVenus() = getAgeOnPlanet(Planet.VENUS)
+  fun onMars() = getAgeOnPlanet(Planet.MARS)
+  fun onJupiter() = getAgeOnPlanet(Planet.JUPITER)
+  fun onSaturn() = getAgeOnPlanet(Planet.SATURN)
+  fun onUranus() = getAgeOnPlanet(Planet.URANUS)
+  fun onNeptune() = getAgeOnPlanet(Planet.NEPTUNE)
 
-  fun onEarth() = getAgeOnPlanet(1.0)
+  private fun getAgeOnPlanet(planet: Planet): Double = (this.seconds.toDouble() / 31557600.0 / planet.relativeYear)
 
-  fun onMercury() = getAgeOnPlanet(0.2408467)
-
-  fun onVenus() = getAgeOnPlanet(0.61519726)
-
-  fun onMars() = getAgeOnPlanet(1.8808158)
-
-  fun onJupiter() = getAgeOnPlanet(11.862615)
-
-  fun onSaturn() = getAgeOnPlanet(29.447498)
-
-  fun onUranus() = getAgeOnPlanet(84.016846)
-
-  fun onNeptune() = getAgeOnPlanet(164.79132)
-
-  private fun getAgeOnPlanet(planetYears: Double): Double {
-    val age = earthYears / planetYears
-    return BigDecimal(age).setScale(2, RoundingMode.HALF_UP).toDouble()
+  companion object {
+    enum class Planet(val relativeYear: Double) {
+      EARTH(1.0),
+      MERCURY(0.2408467),
+      VENUS(0.61519726),
+      MARS(1.8808158),
+      JUPITER(11.862615),
+      SATURN(29.447498),
+      URANUS(84.016846),
+      NEPTUNE(164.79132);
+    }
   }
 }
